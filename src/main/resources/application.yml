@@ -1,0 +1,15 @@
+
+spring:
+    profiles:
+        active: dev # application-dev.yml 或者 application-prod.yml
+    jpa:
+        hibernate:
+            ddl-auto: update # model => 数据表
+    jackson:
+        property-naming-strategy: SNAKE_CASE # 驼峰转下划线
+        serialization:
+            WRITE_DATES_AS_TIMESTAMPS: true # 返回时间戳
+
+
+missyou:
+    api-package: com.li.missyou.api
