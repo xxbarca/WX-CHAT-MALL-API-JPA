@@ -1,4 +1,5 @@
 package com.li.missyou.api.v1;
+import com.li.missyou.exception.http.NotFoundException;
 import com.li.missyou.model.Banner;
 import com.li.missyou.service.BannerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class BannerController {
     @GetMapping("/name/{name}")
     public Banner getByName(@PathVariable @NotBlank String name) {
         Banner banner = bannerService.getByName(name);
+        if (banner == null) {
+            throw new NotFoundException(30005);
+        }
         return banner;
     }
 }
