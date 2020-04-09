@@ -1,13 +1,14 @@
 package com.li.missyou.model;
 
+import com.li.missyou.util.ListAndJson;
+import com.li.missyou.util.MapAndJson;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @Getter
@@ -27,7 +28,17 @@ public class Sku extends BaseEntity {
     private Long categoryId;
     private Long rootCategoryId;
 
-    private String specs;
+    // 规格
+    @Convert(converter = ListAndJson.class)
+    private List<Object> specs;
+
     private String code;
     private Long stock;
+
+    /**
+     * 映射到数据库中的json列
+     * */
+    @Convert(converter = MapAndJson.class)
+    private Map<String, Object> test;
+
 }

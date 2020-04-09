@@ -19,8 +19,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Positive;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/spu")
@@ -44,7 +42,7 @@ public class SpuController {
     }
 
     @GetMapping("/id/{id}/simplify")
-    public SpuSimplifyVO getSimplifySpu(@PathVariable @Positive Long id) {
+    public SpuSimplifyVO getSimplifySpu(@PathVariable @Positive(message = "{id.positive}") Long id) {
         Spu spu = spuService.getSpu(id);
         SpuSimplifyVO vo = new SpuSimplifyVO();
         BeanUtils.copyProperties(spu, vo);
@@ -60,5 +58,16 @@ public class SpuController {
         PageCounter pageCounter = CommonUtil.convertToPageParameter(start, count);
         Page<Spu> page = spuService.getLatestPagingSpu(pageCounter.getPage(), pageCounter.getCount());
         return new PagingDozer<Spu, SpuSimplifyVO>(page, SpuSimplifyVO.class);
+    }
+
+    // TODO 没搞明白, 需要数据
+    @GetMapping("/by/category/{id}")
+    public PagingDozer<Spu, SpuSimplifyVO>getByCategoryId(@PathVariable Long id,
+                                                            @RequestParam(name = "is_root", defaultValue = "false") Boolean isRoot,
+                                                            @RequestParam(name = "start", defaultValue = "0") Integer start,
+                                                            @RequestParam(name = "count", defaultValue = "10") Integer count) {
+        PageCounter pageCounter = CommonUtil.convertToPageParameter(start, count);
+        Page<Spu> page = spuService.getByCategory(id, isRoot, pageCounter.getPage(), pageCounter.getCount());
+        return new PagingDozer<>(page, SpuSimplifyVO.class);
     }
 }

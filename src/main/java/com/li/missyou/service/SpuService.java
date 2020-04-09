@@ -11,4 +11,5 @@ public interface SpuService {
 
     Page<Spu> getLatestPagingSpu(Integer pageNum, Integer pageSize);
 
+    Page<Spu> getByCategory(Long cid, Boolean isRoot, Integer pageNum, Integer size);
 }
