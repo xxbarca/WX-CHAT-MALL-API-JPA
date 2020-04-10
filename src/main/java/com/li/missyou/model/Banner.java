@@ -2,6 +2,7 @@ package com.li.missyou.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Where(clause = "delete_time is null") // delete_time为空表示资源存在
 public class Banner extends BaseEntity {
 
     @Id
