@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Where(clause = "delete_time is null")
-public class Theme extends BaseEntity{
+public class Theme extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

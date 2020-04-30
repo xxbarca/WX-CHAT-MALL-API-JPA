@@ -1,10 +1,7 @@
 package com.li.missyou.dto;
 
-import com.li.missyou.validators.PasswordEqual;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
-
-import javax.validation.Valid;
 
 //@Getter
 //@Setter
@@ -14,7 +11,6 @@ import javax.validation.Valid;
 @Builder
 @Setter
 @Getter
-@PasswordEqual(min = 1, message = "两次密码不相同")
 public class PersonDTO {
 
     @Length(min = 2, max = 10, message = "xxxxx")
