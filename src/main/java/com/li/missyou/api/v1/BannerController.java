@@ -1,4 +1,5 @@
 package com.li.missyou.api.v1;
+import com.li.missyou.core.interceptors.ScopeLevel;
 import com.li.missyou.exception.http.NotFoundException;
 import com.li.missyou.model.Banner;
 import com.li.missyou.service.BannerService;
@@ -25,6 +26,7 @@ public class BannerController {
     private BannerService bannerService;
 
     @GetMapping("/name/{name}")
+    @ScopeLevel(value = 4)
     public Banner getByName(@PathVariable @NotBlank String name) {
         Banner banner = bannerService.getByName(name);
         if (banner == null) {

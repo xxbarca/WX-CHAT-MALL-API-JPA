@@ -23,8 +23,14 @@ public class TokenController {
     @Autowired
     private WxAuthenticationService wxAuthenticationService;
 
+    /**
+     * {
+     *     account: code,
+     *     type: 0
+     * }
+     * */
     @PostMapping("")
-    public Map<String, String> getToken(@RequestBody @Validated TokenGetDTO userData) throws JsonProcessingException {
+    public Map<String, String> getToken(@RequestBody @Validated TokenGetDTO userData) {
         Map<String, String> map = new HashMap<>();
         String token = null;
         switch (userData.getType()) {
