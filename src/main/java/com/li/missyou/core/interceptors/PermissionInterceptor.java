@@ -42,8 +42,14 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
             throw new UnAuthenticatedException(10004);
         }
 
+        //
+        String tokens[] = bearerToken.split(" ");
+        if (!(tokens.length == 2)) {
+            throw new UnAuthenticatedException(10004);
+        }
+
         // Authorization: Bearer <token>
-        String token = bearerToken.split(" ")[1];
+        String token = tokens[1];
 
         Optional<Map<String, Claim>> optionalMap = JwtToken.getClaims(token);
 
