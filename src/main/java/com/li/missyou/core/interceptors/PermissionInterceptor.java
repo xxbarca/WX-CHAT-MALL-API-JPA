@@ -22,6 +22,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         /**
          * 1. 读取@ScopeLevel里面的value值
          * */
+        
         Optional<ScopeLevel> scopeLevel = this.getScopeLevel(handler);
         if (!scopeLevel.isPresent()) {
             // @ScopeLevel 注解不存在 说明是公开的方法
