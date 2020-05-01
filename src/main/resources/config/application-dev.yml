@@ -13,3 +13,9 @@ spring:
             hibernate:
                 show_sql: true
                 format_sql: true
+
+
+missyou:
+    security:
+        jwt-key: liyang007
+        token-expire-in: 86400000
