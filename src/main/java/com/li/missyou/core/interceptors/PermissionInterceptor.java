@@ -1,14 +1,19 @@
 package com.li.missyou.core.interceptors;
 
+import com.auth0.jwt.interfaces.Claim;
+import com.li.missyou.exception.http.ForbiddenException;
 import com.li.missyou.exception.http.UnAuthenticatedException;
+import com.li.missyou.util.JwtToken;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import sun.reflect.generics.scope.Scope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -22,7 +27,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         /**
          * 1. 读取@ScopeLevel里面的value值
          * */
-        
+
         Optional<ScopeLevel> scopeLevel = this.getScopeLevel(handler);
         if (!scopeLevel.isPresent()) {
             // @ScopeLevel 注解不存在 说明是公开的方法
@@ -38,9 +43,23 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         }
 
         // Authorization: Bearer <token>
-        String jwt = bearerToken.split(" ")[1];
+        String token = bearerToken.split(" ")[1];
 
-        return super.preHandle(request, response, handler);
+        Optional<Map<String, Claim>> optionalMap = JwtToken.getClaims(token);
+
+        Map<String, Claim> map = optionalMap.orElseThrow(() -> new UnAuthenticatedException(10004));
+        // 比对 令牌与scopeLevel
+
+        return this.hasPermission(scopeLevel.get(), map);
+    }
+
+    private boolean hasPermission(ScopeLevel scopeLevel, Map<String, Claim> map) {
+        Integer level = scopeLevel.value();
+        Integer scope = map.get("scope").asInt();
+        if (level > scope) {
+            throw new ForbiddenException(10005);
+        }
+        return true;
     }
 
     @Override
@@ -57,6 +76,9 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod)handler;
             ScopeLevel scopeLevel = handlerMethod.getMethod().getAnnotation(ScopeLevel.class);
+            if (scopeLevel == null) {
+                return Optional.empty();
+            }
             return Optional.of(scopeLevel);
         }
         return Optional.empty();

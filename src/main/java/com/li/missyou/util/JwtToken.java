@@ -20,7 +20,7 @@ public class JwtToken {
 
     private static Integer defaultScope = 8;
 
-    public Optional<Map<String, Claim>> getClaims(String token) {
+    public static Optional<Map<String, Claim>> getClaims(String token) {
         DecodedJWT decodedJWT;
         Algorithm algorithm = Algorithm.HMAC256(JwtToken.jwtKey);
         JWTVerifier jwtVerifier = JWT.require(algorithm).build();

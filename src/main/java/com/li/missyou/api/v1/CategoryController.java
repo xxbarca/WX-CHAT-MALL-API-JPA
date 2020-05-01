@@ -36,7 +36,7 @@ public class CategoryController {
 
     @GetMapping("/grid/all")
     private List<GridCategory> getGridCategory() {
-        List<GridCategory> gridCategories =gridCategoryService.getGridCategoryList();
+        List<GridCategory> gridCategories = gridCategoryService.getGridCategoryList();
         if (gridCategories.isEmpty()) {
             throw new NotFoundException(30009);
         }
