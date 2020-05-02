@@ -14,7 +14,6 @@ import javax.persistence.*;
 @Setter
 public class BannerItem extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String img;
     private String keyword;

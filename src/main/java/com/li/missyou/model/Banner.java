@@ -16,11 +16,10 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Where(clause = "delete_time is null") // delete_time为空表示资源存在
+//where delete_time == null
+@Where(clause = "delete_time is null ")
 public class Banner extends BaseEntity {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
@@ -28,6 +27,6 @@ public class Banner extends BaseEntity {
     private String img;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bannerId")
+    @JoinColumn(name="bannerId")
     private List<BannerItem> items;
 }

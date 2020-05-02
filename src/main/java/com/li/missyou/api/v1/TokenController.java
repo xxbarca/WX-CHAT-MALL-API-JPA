@@ -2,9 +2,12 @@ package com.li.missyou.api.v1;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.li.missyou.dto.TokenDTO;
 import com.li.missyou.dto.TokenGetDTO;
 import com.li.missyou.exception.http.NotFoundException;
 import com.li.missyou.service.WxAuthenticationService;
+import com.li.missyou.util.JwtToken;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -44,4 +47,13 @@ public class TokenController {
         map.put("token", token);
         return map;
     }
+
+    @PostMapping("/verify")
+    public Map<String, Boolean> verify(@RequestBody TokenDTO token) {
+        Map<String, Boolean> map = new HashMap<>();
+        Boolean valid = JwtToken.verifyToken(token.getToken());
+        map.put("is_valid", valid);
+        return map;
+    }
+
 }
