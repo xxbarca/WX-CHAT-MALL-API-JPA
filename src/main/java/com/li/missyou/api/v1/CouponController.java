@@ -32,4 +32,18 @@ public class CouponController {
         List<CouponPureVo> vos = CouponPureVo.getList(coupons);
         return vos;
     }
+
+
+    /**
+     * 全场优惠券
+     * */
+    @GetMapping("/whole_store")
+    public List<CouponPureVo> getWholeStoreCouponList() {
+        List<Coupon> coupons = couponService.getWholeStoreCouponList();
+        if (coupons.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<CouponPureVo> vos = CouponPureVo.getList(coupons);
+        return vos;
+    }
 }

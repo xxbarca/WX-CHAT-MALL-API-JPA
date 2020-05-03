@@ -1,6 +1,7 @@
 package com.li.missyou.repository;
 
 import com.li.missyou.model.Coupon;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -16,4 +17,12 @@ public interface CouponRepository extends JpaRepository<Coupon, Long> {
             "and a.startTime < :now " +
             "and a.endTime > :now")
     List<Coupon> findByCategory(Long cid, Date now);
+
+    @Query("select c from Coupon c " +
+            "join Activity a on c.activityId = a.id " +
+            "where c.wholeStore = :isWhoreStore " +
+            "and a.startTime < :now " +
+            "and a.endTime > :now")
+    List<Coupon> findByWholeStore(Boolean isWhoreStore, Date now);
+
 }

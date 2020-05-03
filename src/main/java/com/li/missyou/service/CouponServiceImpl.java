@@ -23,4 +23,10 @@ public class CouponServiceImpl implements CouponService {
         Date now = new Date();
         return couponRepository.findByCategory(cid, now);
     }
+
+    @Override
+    public List<Coupon> getWholeStoreCouponList() {
+        Date now = new Date();
+        return couponRepository.findByWholeStore(true, now);
+    }
 }

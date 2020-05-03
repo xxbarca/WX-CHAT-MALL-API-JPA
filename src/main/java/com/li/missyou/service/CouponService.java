@@ -7,4 +7,6 @@ import java.util.List;
 public interface CouponService {
 
     List<Coupon> getByCategory(Long cid);
+
+    List<Coupon> getWholeStoreCouponList();
 }
