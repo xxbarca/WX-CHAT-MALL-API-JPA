@@ -36,7 +36,7 @@ public class Activity extends BaseEntity {
 //    private List<Category> categoryList;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name="activityId")
+    @JoinColumn(name="  activityId")
     private List<Coupon> couponList;
 
 //    @ManyToMany(fetch = FetchType.LAZY)

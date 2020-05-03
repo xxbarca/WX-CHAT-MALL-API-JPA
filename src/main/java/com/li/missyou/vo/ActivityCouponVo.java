@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 @Setter
 public class ActivityCouponVo extends ActivityPureVo {
 
-    private List<CouponPureVo> couponList;
+    private List<CouponPureVo> coupons;
 
     public ActivityCouponVo(Activity activity) {
         super(activity);
 
-        this.couponList = activity.getCouponList().stream().map(coupon -> {
+        this.coupons = activity.getCouponList().stream().map(coupon -> {
             CouponPureVo couponPureVo = new CouponPureVo(coupon);
             return couponPureVo;
         }).collect(Collectors.toList());

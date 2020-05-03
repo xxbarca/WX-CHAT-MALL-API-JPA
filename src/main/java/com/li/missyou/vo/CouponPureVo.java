@@ -6,7 +6,10 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -29,8 +32,14 @@ public class CouponPureVo {
     private String remark;
     // 是否是全场券
     private Boolean wholeStore;
+    //
+    private Integer type;
 
     public CouponPureVo(Coupon coupon) {
         BeanUtils.copyProperties(coupon, this);
+    }
+
+    public static List<CouponPureVo> getList(List<Coupon> coupons) {
+        return coupons.stream().map(CouponPureVo::new).collect(Collectors.toList());
     }
 }
