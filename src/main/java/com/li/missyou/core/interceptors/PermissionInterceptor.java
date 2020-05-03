@@ -1,11 +1,15 @@
 package com.li.missyou.core.interceptors;
 
 import com.auth0.jwt.interfaces.Claim;
+import com.li.missyou.core.LocalUser;
 import com.li.missyou.exception.http.ForbiddenException;
 import com.li.missyou.exception.http.UnAuthenticatedException;
+import com.li.missyou.model.User;
+import com.li.missyou.service.UserService;
 import com.li.missyou.util.JwtToken;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -16,8 +20,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * 检验JWT令牌
+ * 写入当前登陆用户
+ * */
 @Slf4j
 public class PermissionInterceptor extends HandlerInterceptorAdapter {
+
+    @Autowired
+    private UserService userService;
+
     public PermissionInterceptor() {
         super();
     }
@@ -54,9 +66,23 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         Optional<Map<String, Claim>> optionalMap = JwtToken.getClaims(token);
 
         Map<String, Claim> map = optionalMap.orElseThrow(() -> new UnAuthenticatedException(10004));
-        // 比对 令牌与scopeLevel
 
-        return this.hasPermission(scopeLevel.get(), map);
+        // 比对 令牌与scopeLevel
+        boolean valid = this.hasPermission(scopeLevel.get(), map);
+        if (valid) {
+            this.setToThreadLocal(map);
+        }
+        return valid;
+    }
+
+    /**
+     * 保存当前用户
+     * */
+    private void setToThreadLocal(Map<String, Claim> map) {
+        Long uid = map.get("uid").asLong();
+        Integer scope = map.get("scope").asInt();
+        User user = userService.getUserById(uid);
+        LocalUser.set(user, scope);
     }
 
     private boolean hasPermission(ScopeLevel scopeLevel, Map<String, Claim> map) {
@@ -70,6 +96,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        LocalUser.clear(); /** 释放当前线程资源 */
         super.postHandle(request, response, handler, modelAndView);
     }
 
@@ -93,6 +120,4 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
     private String getToken(HttpServletRequest request) {
         return request.getHeader("Authorization");
     }
-
-
 }

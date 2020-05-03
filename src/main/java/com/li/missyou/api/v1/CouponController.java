@@ -1,13 +1,13 @@
 package com.li.missyou.api.v1;
 
+import com.li.missyou.core.LocalUser;
+import com.li.missyou.core.interceptors.ScopeLevel;
 import com.li.missyou.model.Coupon;
+import com.li.missyou.model.User;
 import com.li.missyou.service.CouponService;
 import com.li.missyou.vo.CouponPureVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -45,5 +45,17 @@ public class CouponController {
         }
         List<CouponPureVo> vos = CouponPureVo.getList(coupons);
         return vos;
+    }
+
+    /**
+     * 领取优惠券, 需要登陆
+     * ScopeLevel进行权限控制
+     *
+     * @param id: 优惠券id
+     * */
+    @ScopeLevel(value = 5)
+    @PostMapping("/collect/{id}")
+    public void collectCoupon(@PathVariable Long id) {
+        User user = LocalUser.getUser();
     }
 }
