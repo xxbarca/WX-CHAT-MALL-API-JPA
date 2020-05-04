@@ -23,4 +23,5 @@ public class UserCoupon {
     private Long orderId;
     private Integer status;
     private Date createTime;
+    private Date updateTime;
 }

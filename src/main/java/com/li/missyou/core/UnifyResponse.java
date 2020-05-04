@@ -1,5 +1,7 @@
 package com.li.missyou.core;
 
+import com.li.missyou.exception.CreateSuccess;
+
 public class UnifyResponse {
 
     private int code;
@@ -22,5 +24,9 @@ public class UnifyResponse {
 
     public String getRequest() {
         return request;
+    }
+
+    public static void createSuccess(int code) {
+        throw new CreateSuccess(code);
     }
 }

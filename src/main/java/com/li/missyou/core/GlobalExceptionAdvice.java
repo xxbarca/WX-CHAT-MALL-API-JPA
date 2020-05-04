@@ -3,6 +3,7 @@ package com.li.missyou.core;
 
 import com.li.missyou.core.configuration.ExceptionCodeConfiguration;
 import com.li.missyou.exception.http.HttpException;
+import com.li.missyou.exception.http.ParameterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

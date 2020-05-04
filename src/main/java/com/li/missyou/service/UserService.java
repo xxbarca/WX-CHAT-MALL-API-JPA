@@ -6,5 +6,5 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public interface UserService {
 
-    public User getUserById(Long uid);
+    User getUserById(Long uid);
 }

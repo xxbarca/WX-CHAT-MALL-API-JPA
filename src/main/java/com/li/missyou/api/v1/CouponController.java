@@ -1,7 +1,9 @@
 package com.li.missyou.api.v1;
 
 import com.li.missyou.core.LocalUser;
+import com.li.missyou.core.UnifyResponse;
 import com.li.missyou.core.interceptors.ScopeLevel;
+import com.li.missyou.exception.CreateSuccess;
 import com.li.missyou.model.Coupon;
 import com.li.missyou.model.User;
 import com.li.missyou.service.CouponService;
@@ -53,9 +55,11 @@ public class CouponController {
      *
      * @param id: 优惠券id
      * */
-    @ScopeLevel(value = 5)
+    @ScopeLevel()
     @PostMapping("/collect/{id}")
     public void collectCoupon(@PathVariable Long id) {
-        User user = LocalUser.getUser();
+        Long uid = LocalUser.getUser().getId();
+        couponService.collectOneCoupon(uid, id);
+        UnifyResponse.createSuccess(0);
     }
 }
