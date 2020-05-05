@@ -66,4 +66,22 @@ public class CouponServiceImpl implements CouponService {
                 .couponId(couponId).build();
         userCouponRepository.save(userCoupon);
     }
+
+    @Override
+    public List<Coupon> getMyAvailableCoupons(Long uid) {
+        Date now = new Date();
+        return couponRepository.findMyAvailable(uid, now);
+    }
+
+    @Override
+    public List<Coupon> getMyUsedCoupons(Long uid) {
+        Date now = new Date();
+        return couponRepository.findMyUsed(uid, now);
+    }
+
+    @Override
+    public List<Coupon> getMyExpiredCoupons(Long uid) {
+        Date now = new Date();
+        return couponRepository.findMyExpired(uid, now);
+    }
 }
