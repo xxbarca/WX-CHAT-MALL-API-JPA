@@ -62,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
                     .findFirstByUserIdAndCouponId(uid, couponId)
                     .orElseThrow(() -> new NotFoundException(50006));
             //
-            couponChecker = new CouponChecker(coupon, userCoupon, iMoneyDiscount);
+            couponChecker = new CouponChecker(coupon, iMoneyDiscount);
         }
     }
 }
