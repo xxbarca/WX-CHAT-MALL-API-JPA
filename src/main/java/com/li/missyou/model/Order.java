@@ -25,5 +25,12 @@ public class Order extends BaseEntity {
     private Long totalCount;
     private String snapImg;
     private String snapTitle;
-    private String snapItem;
+
+    /**保存当前订单里面的所有要购买的sku信息*/
+    private String snapItems;
+
+    private String snapAddress;
+    private String prepayId;
+    private BigDecimal finalTotalPrice;
+    private Integer status;
 }

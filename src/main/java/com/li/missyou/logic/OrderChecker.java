@@ -1,22 +1,19 @@
 package com.li.missyou.logic;
 
 import com.li.missyou.bo.SkuOrderBO;
-import com.li.missyou.core.interceptors.ScopeLevel;
 import com.li.missyou.dto.OrderDTO;
 import com.li.missyou.dto.SkuInfoDTO;
 import com.li.missyou.exception.http.ParameterException;
+import com.li.missyou.model.OrderSku;
 import com.li.missyou.model.Sku;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * 订单校验
  * */
 public class OrderChecker {
 
@@ -25,11 +22,29 @@ public class OrderChecker {
     private OrderDTO orderDTO;
     private Integer maxSkuLimit;
 
+    @Getter /**写入数据库*/
+    private List<OrderSku> orderSkuList = new ArrayList<>();
+
     public OrderChecker(OrderDTO orderDTO, List<Sku> serverSkuList, CouponChecker couponChecker, Integer maxSkuLimit) {
         this.orderDTO = orderDTO;
         this.serverSkuList = serverSkuList;
         this.couponChecker = couponChecker;
         this.maxSkuLimit = maxSkuLimit;
+    }
+
+    public String getLeaderImg() {
+        return this.serverSkuList.get(0).getImg();
+    }
+
+    public String getLeaderTitle() {
+        return this.serverSkuList.get(0).getTitle();
+    }
+
+    public Integer getTotalCount() {
+        return this.orderDTO.getSkuInfoList()
+                .stream().map(SkuInfoDTO::getCount)
+                .reduce(Integer::sum)
+                .orElse(0);
     }
 
     /**
@@ -56,10 +71,12 @@ public class OrderChecker {
             this.beyondSkuStock(sku, skuInfoDto);
             //
             this.beyondMaxSkuLimit(skuInfoDto);
-            // TODO -- ?
+            //
             serverTotalPrice.add(this.calculateSkuOrderPrice(sku, skuInfoDto));
             //
             skuOrderBOList.add(new SkuOrderBO(sku, skuInfoDto));
+            //
+            this.orderSkuList.add(new OrderSku(skuInfoDto, sku));
         }
         //
         this.totalPriceIsOk(orderDTO.getTotalPrice(), serverTotalPrice);
@@ -69,6 +86,8 @@ public class OrderChecker {
 
     /**
      * 优惠券校验
+     * @param serverTotalPrice
+     * @param skuOrderBOList
      * */
     private void couponCheckerIsOk(List<SkuOrderBO> skuOrderBOList, BigDecimal serverTotalPrice) {
         if (this.couponChecker != null) {

@@ -1,5 +1,6 @@
 package com.li.missyou.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.li.missyou.util.GenericAndJson;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -67,6 +69,14 @@ public class Sku extends BaseEntity {
 
     public BigDecimal getActualPrice() {
         return discountPrice == null ? this.price : this.discountPrice;
+    }
+
+    /**
+     * 不需要返回到前端
+     * */
+    @JsonIgnore
+    public List<String> getSpecValueList() {
+        return this.getSpecs().stream().map(Spec::getValue).collect(Collectors.toList());
     }
 
 }

@@ -21,3 +21,4 @@ missyou:
         token-expire-in: 86400000
     order:
         max-ku-limit: 777
+        pay-time-limit:
