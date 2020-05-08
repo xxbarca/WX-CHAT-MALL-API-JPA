@@ -5,9 +5,11 @@ import com.li.missyou.dto.OrderAddressDTO;
 import com.li.missyou.util.GenericAndJson;
 import lombok.*;
 import org.hibernate.annotations.Where;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -18,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Where(clause = "delete_time is null")
 @Table(name = "`Order`")
+@EntityListeners(AuditingEntityListener.class)
 public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +32,10 @@ public class Order extends BaseEntity {
     private Long totalCount;
     private String snapImg;
     private String snapTitle;
+    // 过期时间
+    private Date expiredTime;
+    // 下单时间
+    private Date placedTime;
 
     /**保存当前订单里面的所有要购买的sku信息*/
     private String snapItems;

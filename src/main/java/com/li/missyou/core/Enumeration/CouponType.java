@@ -1,7 +1,5 @@
 package com.li.missyou.core.Enumeration;
 
-import sun.jvm.hotspot.utilities.ConstantTag;
-
 import java.util.stream.Stream;
 
 public enum  CouponType {

@@ -3,6 +3,7 @@ package com.li.missyou.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -14,12 +15,13 @@ import java.util.Date;
 public abstract class BaseEntity {
 
     @JsonIgnore
-    @Column(insertable = false, updatable = false)
-    public Date createTime;
-    @Column(insertable = false, updatable = false)
-    @JsonIgnore
-    public Date updateTime;
-    @JsonIgnore
-    public Date deleteTime;
+    @CreatedDate
+    private Date createTime;
 
+    @JsonIgnore
+    @CreatedDate
+    private Date updateTime;
+
+    @JsonIgnore
+    private Date deleteTime;
 }

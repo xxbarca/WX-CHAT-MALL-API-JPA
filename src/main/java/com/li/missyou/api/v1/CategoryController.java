@@ -6,7 +6,6 @@ import com.li.missyou.model.GridCategory;
 import com.li.missyou.service.CategoryService;
 import com.li.missyou.service.GridCategoryService;
 import com.li.missyou.vo.CategoryAllVo;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

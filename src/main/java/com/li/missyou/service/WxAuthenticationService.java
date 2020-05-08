@@ -6,7 +6,6 @@ import com.li.missyou.exception.http.ParameterException;
 import com.li.missyou.model.User;
 import com.li.missyou.repository.UserRepository;
 import com.li.missyou.util.JwtToken;
-import jdk.nashorn.internal.runtime.options.Option;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @Slf4j

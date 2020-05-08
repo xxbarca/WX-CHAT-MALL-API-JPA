@@ -14,6 +14,7 @@ import com.li.missyou.repository.CouponRepository;
 import com.li.missyou.repository.OrderRepository;
 import com.li.missyou.repository.SkuRepository;
 import com.li.missyou.repository.UserCouponRepository;
+import com.li.missyou.util.CommonUtil;
 import com.li.missyou.util.OrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,6 +95,9 @@ public class OrderServiceImpl implements OrderService {
     @Transactional // 添加事务
     public Long placeOrder(Long uid, OrderDTO orderDTO, OrderChecker orderChecker) {
         String orderNo = OrderUtil.makeOrderNo();
+        Calendar now = Calendar.getInstance();
+        Calendar now1 = (Calendar) now.clone();
+        Date expiredTime = CommonUtil.addSomeSeconds(now, this.payTimeLimit).getTime();
         Order order = Order.builder().orderNo(orderNo)
                         .totalPrice(orderDTO.getTotalPrice())
                         .finalTotalPrice(orderDTO.getFinalTotalPrice())
@@ -100,6 +106,8 @@ public class OrderServiceImpl implements OrderService {
                         .snapImg(orderChecker.getLeaderImg())
                         .snapTitle(orderChecker.getLeaderTitle())
                         .status(OrderStatus.UNPAID.value())
+                        .expiredTime(expiredTime)
+                        .placedTime(now1.getTime())
                         .build();
         order.setSnapAddress(orderDTO.getAddress());
         order.setSnapItems(orderChecker.getOrderSkuList());
