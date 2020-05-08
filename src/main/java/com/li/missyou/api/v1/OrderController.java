@@ -3,8 +3,10 @@ package com.li.missyou.api.v1;
 import com.li.missyou.core.LocalUser;
 import com.li.missyou.core.interceptors.ScopeLevel;
 import com.li.missyou.dto.OrderDTO;
-import com.li.missyou.model.User;
+import com.li.missyou.logic.OrderChecker;
+import com.li.missyou.service.OrderService;
 import com.li.missyou.vo.OrderIdVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,10 +30,16 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class OrderController {
 
+    @Autowired
+    private OrderService orderService;
+
     @PostMapping("")
     @ScopeLevel
     public OrderIdVO placeOrder(@RequestBody OrderDTO orderDTO) {
         Long uid = LocalUser.getUser().getId();
-        return null;
+        OrderChecker orderChecker = orderService.isOk(uid, orderDTO);
+        // 下单
+        Long oid = orderService.placeOrder(uid, orderDTO, orderChecker);
+        return new OrderIdVO(oid);
     }
 }

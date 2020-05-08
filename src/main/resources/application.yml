@@ -13,6 +13,7 @@ spring:
 
 missyou:
     api-package: com.li.missyou.api
+    year-codes: A,B,C,D,E,F,G,H,I,J,K,L
 
 
 wx:

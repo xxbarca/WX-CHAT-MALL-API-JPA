@@ -3,7 +3,6 @@ package com.li.missyou.core;
 
 import com.li.missyou.core.configuration.ExceptionCodeConfiguration;
 import com.li.missyou.exception.http.HttpException;
-import com.li.missyou.exception.http.ParameterException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 

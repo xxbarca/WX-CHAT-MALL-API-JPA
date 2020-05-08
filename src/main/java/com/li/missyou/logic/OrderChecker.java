@@ -22,7 +22,7 @@ public class OrderChecker {
     private OrderDTO orderDTO;
     private Integer maxSkuLimit;
 
-    @Getter /**写入数据库*/
+    @Getter // 写入数据库
     private List<OrderSku> orderSkuList = new ArrayList<>();
 
     public OrderChecker(OrderDTO orderDTO, List<Sku> serverSkuList, CouponChecker couponChecker, Integer maxSkuLimit) {
@@ -56,41 +56,42 @@ public class OrderChecker {
      * 5. 优惠券校验
      * */
     public void isOk() {
-        // 服务端当前订单原价
+        // 服务端计算当前订单原价
         BigDecimal serverTotalPrice = new BigDecimal("0");
         List<SkuOrderBO> skuOrderBOList = new ArrayList<>();
-        //
+        // 检测是否有下架商品
         this.skuNotOnSale(orderDTO.getSkuInfoList().size(), serverSkuList.size());
         //
-        for (int i = 0; i < serverSkuList.size(); i++) {
+        for (int i = 0; i < this.serverSkuList.size(); i++) {
             Sku sku = serverSkuList.get(i);
             SkuInfoDTO skuInfoDto = orderDTO.getSkuInfoList().get(i);
-            //
+            // 校验商品是否售罄
             this.containsSoldOutSku(sku);
-            //
+            // 校验是否超过库存
             this.beyondSkuStock(sku, skuInfoDto);
-            //
+            // 校验是否超出最大购买数量
             this.beyondMaxSkuLimit(skuInfoDto);
             //
-            serverTotalPrice.add(this.calculateSkuOrderPrice(sku, skuInfoDto));
-            //
+            serverTotalPrice = serverTotalPrice.add(this.calculateSkuOrderPrice(sku, skuInfoDto));
+            // 订单中sku的存储列表
             skuOrderBOList.add(new SkuOrderBO(sku, skuInfoDto));
-            //
+            //  保存到 order.snapItems 中
             this.orderSkuList.add(new OrderSku(skuInfoDto, sku));
         }
         //
         this.totalPriceIsOk(orderDTO.getTotalPrice(), serverTotalPrice);
-        //
+        // 优惠券校验
         this.couponCheckerIsOk(skuOrderBOList, serverTotalPrice);
     }
 
     /**
      * 优惠券校验
-     * @param serverTotalPrice
-     * @param skuOrderBOList
+     * @param serverTotalPrice: 服务端计算的总价
+     * @param skuOrderBOList: 订单中sku的存储列表
      * */
     private void couponCheckerIsOk(List<SkuOrderBO> skuOrderBOList, BigDecimal serverTotalPrice) {
         if (this.couponChecker != null) {
+            // 优惠券是否过期
             this.couponChecker.isOk();
             this.couponChecker.canBeUsed(skuOrderBOList, serverTotalPrice);
             this.couponChecker.finalTotalPriceIsOk(this.orderDTO.getFinalTotalPrice(), serverTotalPrice);
@@ -110,8 +111,8 @@ public class OrderChecker {
 
     /**
      *
-     * @param skuInfoDTO
-     * @param sku
+     * @param skuInfoDTO:
+     * @param sku:
      * */
     private BigDecimal calculateSkuOrderPrice(Sku sku, SkuInfoDTO skuInfoDTO) {
         if (skuInfoDTO.getCount() <= 0) {
@@ -122,8 +123,8 @@ public class OrderChecker {
 
     /**
      * 检测是否有下架商品
-     * @param count1
-     * @param count2
+     * @param count1:
+     * @param count2:
      * */
     private void skuNotOnSale(int count1, int count2) {
         if (count1 != count2) {
@@ -134,7 +135,7 @@ public class OrderChecker {
     /**
      * 检测商品是否售罄
      * 初步预判断
-     * @param sku
+     * @param sku:
      * */
     private void containsSoldOutSku(Sku sku) {
         if (sku.getStock() == 0) {
@@ -144,8 +145,8 @@ public class OrderChecker {
 
     /**
      * 检测购买数量是否超出库存
-     * @param sku
-     * @param skuInfoDTO
+     * @param sku:
+     * @param skuInfoDTO:
      * */
     private void beyondSkuStock(Sku sku, SkuInfoDTO skuInfoDTO) {
         if (skuInfoDTO.getCount() > sku.getStock()) {
@@ -155,12 +156,11 @@ public class OrderChecker {
 
     /**
      * 购买数量是否超出了最大购买数量
-     * @param skuInfoDTO
+     * @param skuInfoDTO:
      * */
     private void beyondMaxSkuLimit(SkuInfoDTO skuInfoDTO) {
         if (skuInfoDTO.getCount() > this.maxSkuLimit) {
             throw new ParameterException(50004);
         }
     }
-
 }

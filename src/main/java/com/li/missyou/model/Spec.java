@@ -1,21 +1,20 @@
 package com.li.missyou.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Setter
 @Getter
-@Entity
-public class Spec {
+public class Spec implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty("key_id")
     private Long keyId;
-    @Column(name = "`key`")
     private String key;
+    @JsonProperty("value_id")
     private Long valueId;
-    @Column(name = "`value`")
     private String value;
 }

@@ -4,9 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import com.li.missyou.exception.http.ServerErrorException;
 
-import java.util.List;
-
+@Component
 public class GenericAndJson {
 
     private static ObjectMapper mapper;
@@ -21,46 +22,20 @@ public class GenericAndJson {
             return GenericAndJson.mapper.writeValueAsString(o);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("message");
+            throw new ServerErrorException(9999);
         }
     }
 
-    public static <T> T jsonToObject(String s, TypeReference<T> t) {
+    public static <T> T jsonToObject(String s,  TypeReference<T> tr) {
         if (s == null) {
             return null;
         }
         try {
-            T o = GenericAndJson.mapper.readValue(s, t);
-            return o;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("message");
-        }
-    }
-
-    public static <T>List<T> jsonToList(String s) {
-        if (s == null) {
-            return null;
-        }
-        try {
-            List<T> list = GenericAndJson.mapper.readValue(s, new TypeReference<List<T>>() {});
-            return list;
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            throw new RuntimeException("message");
-        }
-    }
-
-    public static <T> T jsonToList(String s, TypeReference<T> t) {
-        if (s == null) {
-            return null;
-        }
-        try {
-            T o = GenericAndJson.mapper.readValue(s, t);
+            T o = GenericAndJson.mapper.readValue(s, tr);
             return o;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            throw new RuntimeException("message");
+            throw new ServerErrorException(9999);
         }
     }
 }

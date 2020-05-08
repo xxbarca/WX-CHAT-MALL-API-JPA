@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import sun.reflect.generics.scope.Scope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,10 +35,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        /**
-         * 1. 读取@ScopeLevel里面的value值
-         * */
-
+        // 1. 读取@ScopeLevel里面的value值
         Optional<ScopeLevel> scopeLevel = this.getScopeLevel(handler);
         if (!scopeLevel.isPresent()) {
             // @ScopeLevel 注解不存在 说明是公开的方法
@@ -96,7 +92,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        LocalUser.clear(); /** 释放当前线程资源 */
+        LocalUser.clear(); //释放当前线程资源
         super.postHandle(request, response, handler, modelAndView);
     }
 
