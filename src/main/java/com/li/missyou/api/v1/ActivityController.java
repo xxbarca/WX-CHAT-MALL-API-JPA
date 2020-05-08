@@ -28,9 +28,7 @@ public class ActivityController {
             throw new NotFoundException(40001);
         }
 
-        ActivityPureVo activityPureVo = new ActivityPureVo(activity);
-
-        return activityPureVo;
+        return new ActivityPureVo(activity);
     }
 
     /**
@@ -43,8 +41,7 @@ public class ActivityController {
             throw new NotFoundException(40001);
         }
 
-        ActivityCouponVo activityCouponVo = new ActivityCouponVo(activity);
-        return activityCouponVo;
+        return new ActivityCouponVo(activity);
 
     }
 }

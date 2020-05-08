@@ -1,7 +1,6 @@
 package com.li.missyou.repository;
 
 import com.li.missyou.model.Coupon;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

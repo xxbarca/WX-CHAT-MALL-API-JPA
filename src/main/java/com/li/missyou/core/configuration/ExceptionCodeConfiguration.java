@@ -22,8 +22,7 @@ public class ExceptionCodeConfiguration {
     private Map<Integer, String> codes = new HashMap<>();
 
     public String getMessage(int code) {
-        String message = codes.get(code);
-        return message;
+        return codes.get(code);
     }
 
     public Map<Integer, String> getCodes() {

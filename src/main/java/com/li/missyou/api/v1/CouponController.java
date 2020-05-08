@@ -36,8 +36,7 @@ public class CouponController {
         if (coupons.isEmpty()) {
             return Collections.emptyList();
         }
-        List<CouponPureVo> vos = CouponPureVo.getList(coupons);
-        return vos;
+        return CouponPureVo.getList(coupons);
     }
 
 
@@ -50,8 +49,7 @@ public class CouponController {
         if (coupons.isEmpty()) {
             return Collections.emptyList();
         }
-        List<CouponPureVo> vos = CouponPureVo.getList(coupons);
-        return vos;
+        return CouponPureVo.getList(coupons);
     }
 
     /**
