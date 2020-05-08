@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -16,5 +17,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
                                                                Integer status,
                                                                Long userId,
                                                                Pageable pageable);
+
+    Page<Order> findByUserId(Long uid, Pageable pageable);
+
+    Page<Order> findByUserIdAndStatus(Long uid, Integer status, Pageable pageable);
+
+    Optional<Order> findFirstByUserIdAndId(Long uid, Long id);
 
 }

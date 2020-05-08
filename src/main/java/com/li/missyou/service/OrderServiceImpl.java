@@ -30,6 +30,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -139,7 +140,28 @@ public class OrderServiceImpl implements OrderService {
         Long uid = LocalUser.getUser().getId();
         Date now = new Date();
         return this.orderRepository.findByExpiredTimeGreaterThanAndStatusAndUserId(now, OrderStatus.UNPAID.value(), uid, pageable);
+    }
 
+    @Override
+    public Page<Order> getByStatus(Integer status, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Long uid = LocalUser.getUser().getId();
+
+        if (status == OrderStatus.All.value()) {
+            return this.orderRepository.findByUserId(uid, pageable);
+        } else {
+            return this.orderRepository.findByUserIdAndStatus(uid, status, pageable);
+        }
+    }
+
+    /**
+     * 获取订单详情
+     * @param id: 订单详情
+     * */
+    @Override
+    public Optional<Order> getOrderDetail(Long id) {
+        Long uid = LocalUser.getUser().getId();
+        return this.orderRepository.findFirstByUserIdAndId(uid, id);
     }
 
     /**
