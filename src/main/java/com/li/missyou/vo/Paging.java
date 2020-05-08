@@ -9,7 +9,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor // 无参构造函数
+@NoArgsConstructor
 public class Paging<T> {
     private Long total;
     private Integer count;

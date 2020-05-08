@@ -1,6 +1,7 @@
 package com.li.missyou.service;
 
 import com.li.missyou.core.Enumeration.OrderStatus;
+import com.li.missyou.core.LocalUser;
 import com.li.missyou.core.money.IMoneyDiscount;
 import com.li.missyou.dto.OrderDTO;
 import com.li.missyou.dto.SkuInfoDTO;
@@ -18,6 +19,10 @@ import com.li.missyou.util.CommonUtil;
 import com.li.missyou.util.OrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -121,6 +126,20 @@ public class OrderServiceImpl implements OrderService {
         }
         // 数据加入到延迟消息队列
         return order.getId();
+    }
+
+    /**
+     * 待支付的订单数量
+     * @param page: 页码
+     * @param size: 每页数量
+     * */
+    @Override
+    public Page<Order> getUnpaid(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Long uid = LocalUser.getUser().getId();
+        Date now = new Date();
+        return this.orderRepository.findByExpiredTimeGreaterThanAndStatusAndUserId(now, OrderStatus.UNPAID.value(), uid, pageable);
+
     }
 
     /**

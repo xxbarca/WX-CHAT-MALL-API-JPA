@@ -3,6 +3,10 @@ package com.li.missyou.service;
 import com.li.missyou.dto.OrderDTO;
 import com.li.missyou.logic.CouponChecker;
 import com.li.missyou.logic.OrderChecker;
+import com.li.missyou.model.Order;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
 
 public interface OrderService {
 
@@ -21,4 +25,10 @@ public interface OrderService {
      * */
     Long placeOrder(Long uid, OrderDTO orderDTO, OrderChecker orderChecker);
 
+    /**
+     * 待支付的订单数量
+     * @param page: 页码
+     * @param size: 每页数量
+     * */
+    Page<Order> getUnpaid(Integer page, Integer size);
 }

@@ -9,13 +9,16 @@ import java.util.List;
 
 public class PagingDozer<T, K> extends Paging {
 
-    public PagingDozer(Page<T> pageT, Class<K> kClass) {
+    @SuppressWarnings("unchecked")
+    public PagingDozer(Page<T> pageT, Class<K> classK ) {
         this.initPageParameters(pageT);
+
         List<T> tList = pageT.getContent();
         Mapper mapper = DozerBeanMapperBuilder.buildDefault();
         List<K> voList = new ArrayList<>();
-        tList.forEach(t -> {
-            K vo = mapper.map(t, kClass);
+
+        tList.forEach(t->{
+            K vo = mapper.map(t, classK);
             voList.add(vo);
         });
         this.setItems(voList);

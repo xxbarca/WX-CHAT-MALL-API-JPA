@@ -1,17 +1,24 @@
 package com.li.missyou.api.v1;
 
+import com.li.missyou.bo.PageCounter;
 import com.li.missyou.core.LocalUser;
 import com.li.missyou.core.interceptors.ScopeLevel;
 import com.li.missyou.dto.OrderDTO;
 import com.li.missyou.logic.OrderChecker;
+import com.li.missyou.model.Order;
 import com.li.missyou.service.OrderService;
+import com.li.missyou.util.CommonUtil;
 import com.li.missyou.vo.OrderIdVO;
+import com.li.missyou.vo.OrderSimplifyVo;
+import com.li.missyou.vo.PagingDozer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 订单
@@ -33,6 +40,9 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+    @Value("${missyou.order.pay-time-limit}")
+    private Integer payTimeLimit;
+
     @PostMapping("")
     @ScopeLevel
     public OrderIdVO placeOrder(@RequestBody OrderDTO orderDTO) {
@@ -41,5 +51,17 @@ public class OrderController {
         // 下单
         Long oid = orderService.placeOrder(uid, orderDTO, orderChecker);
         return new OrderIdVO(oid);
+    }
+
+    @GetMapping("/status/unpaid")
+    @ScopeLevel
+    @SuppressWarnings("unchecked")
+    public PagingDozer getUnpaid(@RequestParam(defaultValue = "0") Integer start,
+                                             @RequestParam(defaultValue = "10") Integer count) {
+        PageCounter page = CommonUtil.convertToPageParameter(start, count);
+        Page<Order> orderPage = this.orderService.getUnpaid(page.getPage(), page.getCount());
+        PagingDozer pagingDozer = new PagingDozer<>(orderPage, OrderSimplifyVo.class);
+        pagingDozer.getItems().forEach((o) -> ((OrderSimplifyVo) o).setPeriod(this.payTimeLimit.longValue()));
+        return pagingDozer;
     }
 }
