@@ -11,8 +11,8 @@ import java.util.List;
 @Getter
 @Setter
 public class Spu extends BaseEntity {
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long id;
     private String title;
     private String subtitle;
@@ -27,18 +27,19 @@ public class Spu extends BaseEntity {
     private String description;
     private String tags;
     private Boolean isTest;
-//    private Object spuThemeImg;
+
+    //    private Object spuThemeImg;
     private String forThemeImg;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "spuId")
+    @JoinColumn(name="spuId")
     private List<Sku> skuList;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "spuId")
+    @JoinColumn(name="spuId")
     private List<SpuImg> spuImgList;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "spuId")
+    @JoinColumn(name="spuId")
     private List<SpuDetailImg> spuDetailImgList;
 }
