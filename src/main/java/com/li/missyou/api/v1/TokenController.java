@@ -51,5 +51,4 @@ public class TokenController {
         map.put("is_valid", valid);
         return map;
     }
-
 }

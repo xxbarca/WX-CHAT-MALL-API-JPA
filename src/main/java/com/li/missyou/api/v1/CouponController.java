@@ -37,7 +37,6 @@ public class CouponController {
         return CouponPureVo.getList(coupons);
     }
 
-
     /**
      * 全场优惠券
      * */
@@ -102,11 +101,9 @@ public class CouponController {
         if (coupons.isEmpty()) {
             return Collections.emptyList();
         }
-
         return coupons.stream().map(coupon -> {
             CouponCategoryVO vo = new CouponCategoryVO(coupon);
             return vo;
         }).collect(Collectors.toList());
-
     }
 }

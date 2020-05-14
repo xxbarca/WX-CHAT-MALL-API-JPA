@@ -21,7 +21,6 @@ public class BannerController {
      * 3. 找到多个 并不一定会报错 按照字段名字推断选择那个bean
      * 4. 按照名字和类型都没有找到相应的bean 报错
      * */
-
     @Autowired
     private BannerService bannerService;
 

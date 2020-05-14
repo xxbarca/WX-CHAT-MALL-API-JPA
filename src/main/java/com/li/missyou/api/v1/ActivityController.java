@@ -24,7 +24,6 @@ public class ActivityController {
         if (activity == null) {
             throw new NotFoundException(40001);
         }
-
         return new ActivityPureVo(activity);
     }
 
@@ -37,8 +36,6 @@ public class ActivityController {
         if (activity == null) {
             throw new NotFoundException(40001);
         }
-
         return new ActivityCouponVo(activity);
-
     }
 }
