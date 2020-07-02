@@ -27,6 +27,10 @@ public class CouponController {
     /**
      * 商品详情页可用优惠券
      * @param cid: 二级分类id号码
+     *
+     * select * from coupon c
+     *     join coupon_category cc on c.id = cc.coupon_id
+     *     where cc.category_id = 32;
      * */
     @GetMapping("/by/category/{cid}")
     public List<CouponPureVo> getCouponListByCategory(@PathVariable Long cid) {
@@ -39,6 +43,7 @@ public class CouponController {
 
     /**
      * 全场优惠券
+     * select * from coupon where whole_store = 1 ;
      * */
     @GetMapping("/whole_store")
     public List<CouponPureVo> getWholeStoreCouponList() {

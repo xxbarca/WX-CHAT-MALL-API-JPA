@@ -28,7 +28,7 @@ public class SpuController {
      * spu详情数据查询
      * */
     @GetMapping("/id/{id}/detail")
-    public Spu getDetail(@PathVariable @Positive Long id) {
+    public Spu getDetail(@PathVariable @Positive(message = "{id.positive}") Long id) {
         Spu spu = spuService.getSpu(id);
         if (spu == null) {
             throw new NotFoundException(30003);

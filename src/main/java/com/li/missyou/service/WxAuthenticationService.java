@@ -84,7 +84,7 @@ public class WxAuthenticationService {
         } else {
             User user1 = User.builder().openid(openid).build();
             userRepository.save(user1);
-            Long uid = user.getId();
+            Long uid = user1.getId();
             return JwtToken.makeToken(uid);
         }
 

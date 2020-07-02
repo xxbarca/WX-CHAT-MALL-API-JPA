@@ -29,6 +29,9 @@ public class ActivityController {
 
     /**
      * 点击活动进入的优惠券列表界面
+     * select * from activity a
+     *     left join coupon c on a.id = c.activity_id
+     *     where a.name = 'a-2';
      * */
     @GetMapping("/name/{name}/with_coupon")
     public ActivityCouponVo getActivityWithCoupon(@PathVariable String name) {
