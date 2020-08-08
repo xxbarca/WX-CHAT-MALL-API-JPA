@@ -21,6 +21,7 @@ import java.util.List;
 public class Banner extends BaseEntity {
     @Id
     private Long id;
+    @Column(length = 16)
     private String name;
     private String description;
     private String title;

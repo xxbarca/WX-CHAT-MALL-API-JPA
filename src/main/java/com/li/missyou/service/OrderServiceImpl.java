@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
     private SkuRepository skuRepository;
 
 
-    @Value("${missyou.order.max-ku-limit}")
+    @Value("${missyou.order.max-sku-limit}")
     private Integer maxSkuLimit;
 
     @Value("${missyou.order.pay-time-limit}")

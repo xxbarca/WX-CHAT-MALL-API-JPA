@@ -56,6 +56,7 @@ public class SpuController {
     }
 
     // TODO 没搞明白, 需要数据
+    // 根据分类获取SPu
     @GetMapping("/by/category/{id}")
     public PagingDozer<Spu, SpuSimplifyVO>getByCategoryId(@PathVariable Long id,
                                                             @RequestParam(name = "is_root", defaultValue = "false") Boolean isRoot,
